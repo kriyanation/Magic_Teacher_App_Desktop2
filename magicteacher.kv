@@ -1,5 +1,8 @@
 #:import Factory kivy.factory.Factory
 <ScreenManagement>:
+    LessonGroupScreen:
+        id:screen0
+        name: 'groups'
     LessonListScreen:
         id:screen1
         name: 'lessons'
@@ -64,6 +67,23 @@
             size_hint_y:0.04
             font_size:'20sp'
 
+        Label:
+            text:"Group"
+            size_hint_x:0.2
+
+        Spinner:
+            id: whatever
+            text: " Group A "
+
+            halign:"left"                              #default value showed
+            text_size:(300, None)
+            values: root.lesson_groups      #list of values to show
+            option_cls: Factory.get("DelSpinnerOption")
+            on_text:
+                root.on_select_group(self.text)
+            background_color:[0.76,0.83,0.86,0.8]
+            font_name:"Caveat-Bold"
+            font_size: "30sp"
 
 
         Button:
@@ -74,7 +94,7 @@
             background_color:[0.76,0.83,0.86,0.8]
 
         Button:
-            text: 'Cancel'
+            text: 'Close'
             size_hint_x:0.2
             size_hint_y:0.8
             on_release: root.close_pop()
@@ -94,8 +114,8 @@
         GridLayout:
             cols:2
             row_force_default:True
-            row_default_height:100
-            padding:[20,20,20,20]
+            row_default_height:60
+            padding:[5,5,5,5]
             spacing:[20,20]
             Label:
                 text:"User ID"
@@ -138,11 +158,12 @@
                 on_release: root.dismiss()
                 background_color:[0.76,0.83,0.86,0.8]
         AnchorLayout:
+            size_hint:(1,0.5)
             Button:
                 text: 'Register'
                 anchor_x:"center"
-                size_hint_x:0.3
-                size_hint_y:0.25
+                size_hint_x:0.4
+                size_hint_y:0.4
                 halign:"center"
                 on_release: root.register_user()
                 background_color:[0.76,0.83,0.86,0.8]
@@ -160,11 +181,12 @@
 
     orientation: 'vertical'
     GridLayout:
-        padding:[20,20,20,20]
+        size_hint:(1,0.8)
+        padding:[5,5,5,5]
         spacing:[20,20]
         cols:2
         row_force_default:True
-        row_default_height:80
+        row_default_height:60
 
 
         Label:
@@ -193,6 +215,25 @@
             on_text:root.on_title_text(self,self.text)
             font_size:'50sp'
 
+        Label:
+            text:"Group"
+            size_hint_x:0.2
+
+        Spinner:
+            id: whatever
+            text: " Group A "
+
+            halign:"left"                              #default value showed
+            text_size:(300, None)
+            values: root.lesson_groups      #list of values to show
+            option_cls: Factory.get("DelSpinnerOption")
+            on_text:
+                root.on_select_group(self.text)
+            background_color:[0.76,0.83,0.86,0.8]
+            font_name:"Caveat-Bold"
+            font_size: "30sp"
+
+
         Button:
             text: 'Create'
             size_hint_x:1
@@ -200,22 +241,34 @@
             on_release: root.create_lesson(self)
             background_color:[0.76,0.83,0.86,0.8]
         Button:
-            text: 'Cancel'
+            text: 'Close'
             size_hint_x:1
             size_hint_y:0.3
             on_release: root.close_pop(self)
             background_color:[0.76,0.83,0.86,0.8]
     AnchorLayout:
+        size_hint:(1,0.1)
         Label:
-            text:"In Hindi to get आदरणीय अध्यापिका \n you should type AdarNIya adhyApikA"
+            text:"In Hindi to get आदरणीय अध्यापिका \n you can type AdarNIya adhyApikA"
             size_hint_x:1
             font_name:"unifont.ttf"
+            text_size:(self.width,None)
+            anchor_x:"center"
+            halign:"center"
+
+    AnchorLayout:
+        size_hint:(1,0.1)
+        Label:
+            text: root.text_status
+            size_hint_x:1
+            text_size:(self.width,None)
             anchor_x:"center"
             halign:"center"
 
 <DelSpinnerOption@SpinnerOption>
     halign: "left"
-    font_name: "unifont.ttf"
+    font_name: "Caveat-Bold.ttf"
+    font_size: "25sp"
     text_size:(300,None)
     background_color:[0.76,0.83,0.86,0.8]
 
@@ -264,6 +317,42 @@
             on_release: root.dismiss()
             background_color:[0.76,0.83,0.86,0.8]
 
+<LessonGroupScreen>
+
+    container: container
+    BoxLayout:
+        orientation: 'vertical'
+        ActionBar:
+            pos_hint: {'top':1}
+
+            ActionView:
+                use_separator: True
+
+
+                ActionPrevious:
+                    app_icon: "logo_bg_small.png"
+
+                ActionButton:
+                    text: ' Create Mini Lesson '
+                    on_press: root.launch_popup_create()
+
+                ActionButton:
+                    text: ' Import Mini Lesson '
+                    on_press: root.launch_popup()
+
+
+        ScrollView:
+            size_hint: (1, 1)
+            bar_width: 10
+            bar_color: 1, 0, 0, 1   # red
+            bar_inactive_color: 0, 0, 1, 1   # blue
+            effect_cls: "ScrollEffect"
+            scroll_type: ['bars']
+            effect_cls: "ScrollEffect"
+            BoxLayout:
+                id: container
+                orientation: 'vertical'
+                size_hint_y:None
 <LessonListScreen>
 
     lesson_c:lesson_c
@@ -278,14 +367,10 @@
 
                 ActionPrevious:
                     app_icon: "logo.png"
+                    on_release: root.set_previous_screen()
 
-                ActionButton:
-                    text: ' Create Mini Lesson '
-                    on_press: root.launch_popup()
 
-                ActionButton:
-                    text: ' Import '
-                    on_press: root.launch_popup_import()
+
                 ActionOverflow:
                     ActionButton:
                         text: ' Delete '
@@ -298,11 +383,11 @@
             #size_hint: (1, None)
             #size:(800,850)
             size_hint: (1, 1)
-            #bar_width: 10
-            #bar_color: 1, 0, 0, 1   # red
-            #bar_inactive_color: 0, 0, 1, 1   # blue
+            bar_width: 10
+            bar_color: 1, 0, 0, 1   # red
+            bar_inactive_color: 0, 0, 1, 1   # blue
             effect_cls: "ScrollEffect"
-            #scroll_type: ['bars']
+            scroll_type: ['bars']
 
             BoxLayout:
                 id:lesson_c
@@ -323,7 +408,7 @@
             size_hint:(1,0.2)
             Button:
                 size_hint:(0.2,0.3)
-                text: "Open an Image Link"
+                text: "Open an Image File"
                 on_release:root.file_pop()
                 background_color:[0.76,0.83,0.86,0.8]
 
@@ -394,14 +479,17 @@
     auto_dismiss:False
     BoxLayout:
         orientation:'vertical'
-        size_hint:(0.9,0.8)
+        size_hint:(0.9,1)
         pos_hint: {'top':1}
         FileChooserIconView:
-
+            size_hint:(1,0.8)
             on_selection: root.save_selected_image(*args)
+
         Button:
-            size_hint:(0.5,0.2)
+            size_hint:(1,0.1)
             text:"Close"
+
+            halign:"center"
             on_release: root.dismiss()
             background_color:[0.76,0.83,0.86,0.8]
 
@@ -468,7 +556,7 @@
             TextInput:
                 id:text_title
                 text: root.text_label_2
-                size_hint: (1,0.1)
+                size_hint: (1,0.15)
                 text_size:(self.width,None)
                 font_size:'50sp'
                 font_name:root.font_name
@@ -481,10 +569,11 @@
                     id:tl_image
                     source:root.text_image
                     size: 350, 350/ self.image_ratio
-                    size_hint: (1,0.7)
+                    size_hint: (1,0.4)
                     allow_stretch: True
+
                 AnchorLayout:
-                    size_hint:(1,0.2)
+                    size_hint:(1,0.15)
                     Button:
                         text: 'Add Image'
                         size_hint:(0.5,0.25)
@@ -496,6 +585,11 @@
             ScrollView:
                 id: scrlv
                 size_hint:(1,0.3)
+                bar_width: 10
+                bar_color: 1, 0, 0, 1   # red
+                bar_inactive_color: 0, 0, 1, 1   # blue
+                effect_cls: "ScrollEffect"
+                scroll_type: ['bars']
 
                 TextInput:
                     id:text_description
@@ -540,30 +634,32 @@
                 text: '<'
                 #size_hint:(0.06,0.15)
                 on_press:root.load_previous()
-                height:10
-                width:10
+                height:1
+                width:1
                 background_color:[0.76,0.83,0.86,0.8]
             Button:
                 text: '>'
                 #size_hint:(0.06,0.15)
-                height:10
-                width:10
+                height:1
+                width:1
                 on_press:root.load_next()
                 background_color:[0.76,0.83,0.86,0.8]
 
 
         BoxLayout:
             orientation:'vertical'
-            size_hint:(1,0.5)
+            size_hint:(1,0.8)
             Image:
                 id:display_image
+                size_hint:(1,0.6)
+                auto_stretch:True
                 source:root.text_image_display
 
             AnchorLayout:
-                size_hint:(1,0.3)
+                size_hint:(1,0.2)
                 Button:
                     text: 'Add Image'
-                    size_hint:(0.5,0.2)
+                    size_hint:(0.5,0.1)
                     anchor_x:"center"
                     on_press: root.launch_image_selector()
                     background_color:[0.76,0.83,0.86,0.8]
@@ -574,12 +670,17 @@
                 on_text:root.on_term_text(self,self.text)
                 font_size:"50sp"
                 multiline:False
-                size_hint:(1,0.15)
+                size_hint:(1,0.2)
                 halign:"center"
 
             ScrollView:
                 id:scrlv
-                size_hint:(1,0.4)
+                size_hint:(1,0.3)
+                bar_width: 10
+                bar_color: 1, 0, 0, 1   # red
+                bar_inactive_color: 0, 0, 1, 1   # blue
+                effect_cls: "ScrollEffect"
+                scroll_type: ['bars']
                 TextInput:
                     id:description
                     #size_hint:(1,0.3)
@@ -592,6 +693,7 @@
                     halign:"center"
                     valign:"top"
                     size_hint_y: None
+
 <LessonApplyScreen>
     steps: steps
     #images: images
@@ -746,6 +848,11 @@
             padding:[20,20,20,20]
             id: scrlv
             size_hint:(1,0.7)
+            bar_width: 10
+            bar_color: 1, 0, 0, 1   # red
+            bar_inactive_color: 0, 0, 1, 1   # blue
+            effect_cls: "ScrollEffect"
+            scroll_type: ['bars']
             TextInput:
                 id:txt
                 size_hint:(1,None)
@@ -758,7 +865,7 @@
                 height: max(self.minimum_height, scrlv.height)
                 text:root.text_label_1
         Button:
-            size_hint:(1,0.2)
+            size_hint:(1,0.15)
             text:"Paste"
             on_release: root.txt.paste()
             background_color:[0.76,0.83,0.86,0.8]
@@ -787,6 +894,11 @@
             padding:[20,20,20,20]
             id: scrlv
             size_hint:(1,0.7)
+            bar_width: 10
+            bar_color: 1, 0, 0, 1   # red
+            bar_inactive_color: 0, 0, 1, 1   # blue
+            effect_cls: "ScrollEffect"
+            scroll_type: ['bars']
             TextInput:
                 id:txt
                 size_hint:(1,None)

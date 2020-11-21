@@ -18,16 +18,20 @@ class ImageUtils():
                 q=sq,
                 cx='dc036f5cac32deb3d',
                 num=10,
+                searchType="image",
+                safe="active",
+
 
             ).execute()
 
             print(res)
             if 'items' in res.keys():
                 for element in res['items']:
-                    if 'pagemap' in element.keys():
-                        if 'cse_image' in element['pagemap'].keys():
-                            print(element['pagemap']['cse_image'][0]['src'])
-                            self.imagelist.append(element['pagemap']['cse_image'][0]['src'])
+                      self.imagelist.append(element['link'])
+            #         if 'pagemap' in element.keys():
+            #             if 'cse_image' in element['pagemap'].keys():
+            #                 print(element['pagemap']['cse_image'][0]['src'])
+            #                 self.imagelist.append(element['pagemap']['cse_image'][0]['src'])
             return self.imagelist
         except:
             traceback.print_exc()
