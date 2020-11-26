@@ -1485,7 +1485,7 @@ class LessonAssessScreen(Screen):
         self.on_save()
         if self.manager.current == 'assess':
             self.manager.transition.direction = 'left'
-            self.manager.current = 'lessons'
+            self.manager.current = 'groups'
 
     def set_previous_screen(self):
         if self.manager.current == 'assess':

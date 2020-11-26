@@ -330,7 +330,7 @@
 
 
                 ActionPrevious:
-                    app_icon: "logo_bg_small.png"
+                    app_icon: "logo.png"
 
                 ActionButton:
                     text: ' Create Mini Lesson '
@@ -913,7 +913,7 @@
         TextInput:
             id:txt_form
             size_hint:(1,0.1)
-            hint_text:"Google Form Link,paste the full link including http://"
+            hint_text:"Add External Link, paste the full link including http://"
             font_size:"15sp"
             multiline:False
             text_size: self.width, None
@@ -921,6 +921,6 @@
             text:root.text_label_2
         Button:
             size_hint:(1,0.15)
-            text:"Paste Form Link"
+            text:"Paste External Link"
             on_release: root.txt_form.paste()
             background_color:[0.76,0.83,0.86,0.8]
