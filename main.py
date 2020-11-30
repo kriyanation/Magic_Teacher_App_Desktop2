@@ -1001,7 +1001,7 @@ class LessonApplyScreen(Screen):
         if key == 27:  # the esc key
             if self.manager.current == 'apply':
                 self.manager.transition.direction = 'right'
-                self.manager.current = 'factual'
+                self.manager.current = 'notes'
                 return True
 
     def on_enter(self):
@@ -1280,7 +1280,7 @@ class LessonWhiteboardScreen(Screen):
     def on_key(self, window, key, *args):
         if key == 27:  # the esc key
             if self.manager.current == 'whiteboard':
-                self.manager.current = 'apply'
+                self.manager.current = 'factual'
                 self.manager.transition.direction = 'right'
                 return True
 
