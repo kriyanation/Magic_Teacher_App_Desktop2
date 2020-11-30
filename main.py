@@ -1498,7 +1498,7 @@ class MagicTeacherApp(App):
         return True
 
     def build(self):
-        self.icon = 'logo.png'
+        self.icon = 'logo_bg_small.png'
         self.title = 'Lesson Creator'
         classid = data_capture_lessons.get_classid()
         if classid is None or classid == "":
