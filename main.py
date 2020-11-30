@@ -1356,7 +1356,7 @@ class LessonNotesScreen(Screen):
         self.on_save()
         if self.manager.current == 'notes':
             self.manager.transition.direction = 'left'
-            self.manager.current = 'assess'
+            self.manager.current = 'apply'
 
     def set_previous_screen(self):
         if self.manager.current == 'notes':
@@ -1438,7 +1438,7 @@ class LessonAssessScreen(Screen):
         if key == 27:  # the esc key
             if self.manager.current == 'assess':
                 self.manager.transition.direction = 'right'
-                self.manager.current = 'notes'
+                self.manager.current = 'apply'
                 return True
 
     def publish_lesson(self):
@@ -1490,7 +1490,7 @@ class LessonAssessScreen(Screen):
     def set_previous_screen(self):
         if self.manager.current == 'assess':
             self.manager.transition.direction = 'right'
-            self.manager.current = 'notes'
+            self.manager.current = 'apply'
 
 
 class MagicTeacherApp(App):
